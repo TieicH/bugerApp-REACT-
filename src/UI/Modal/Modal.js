@@ -2,21 +2,29 @@ import React from "react";
 import classes from "./Modal.css";
 import Backdrop from "../Backdrop/Backdrop";
 
-const modal = props => {
-  return (
-    <>
-      <Backdrop show={props.show} clicked={props.modalClosed} />
-      <div
-        className={classes.Modal}
-        style={{
-          transform: props.show ? "translateY(0px)" : "translateY(-100px)",
-          display: props.show ? "block" : "none"
-        }}
-      >
-        {props.children}
-      </div>
-    </>
-  );
-};
+class Modal extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.show === !this.props.show;
+  }
 
-export default modal;
+  render() {
+    return (
+      <>
+        <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
+        <div
+          className={classes.Modal}
+          style={{
+            transform: this.props.show
+              ? "translateY(0px)"
+              : "translateY(-100px)",
+            display: this.props.show ? "block" : "none"
+          }}
+        >
+          {this.props.children}
+        </div>
+      </>
+    );
+  }
+}
+
+export default Modal;
