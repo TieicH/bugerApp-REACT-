@@ -20,7 +20,8 @@ class BurgerBuilder extends React.Component {
     totalPrice: 4,
     purchaseable: true,
     purchasing: false,
-    loading: false
+    loading: false,
+    error: false
   };
 
   componentDidMount() {
@@ -29,7 +30,9 @@ class BurgerBuilder extends React.Component {
       .then(response => {
         this.setState({ ingredients: response.data });
       })
-      .catch(error => {});
+      .catch(error => {
+        this.setState({ error: true });
+      });
   }
 
   updatePurchaseState(ingredients) {
@@ -130,7 +133,11 @@ class BurgerBuilder extends React.Component {
       orderSummary = <Spinner />;
     }
 
-    let burger = <Spinner />;
+    let burger = this.state.error ? (
+      <p>Ingredients can't be loaded</p>
+    ) : (
+      <Spinner />
+    );
     if (this.state.ingredients) {
       burger = (
         <>
